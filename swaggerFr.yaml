@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
-  title: Bank Argent API documentation
-  description: Contains all available API endpoints in this codebase
+  title: Documentation API Bank Argent
+  description: Contient tous les endpoints API disponibles dans cette base de code
   version: '2.0.0'
   termsOfService: 'http://swagger.io/terms/'
 host: localhost:3001
@@ -12,13 +12,13 @@ paths:
   /user/login:
     post:
       tags:
-        - User Module
-      summary: Login
-      description: API for Login
+        - Module Utilisateur
+      summary: Connexion
+      description: API pour la connexion
       parameters:
         - in: body
           name: body
-          description: Login Payload
+          description: Données de connexion
           required: true
           schema:
             $ref: '#/definitions/Login'
@@ -26,23 +26,23 @@ paths:
         - application/json
       responses:
         '200':
-          description: Login Successfully
+          description: Connexion réussie
           schema:
             $ref: '#/definitions/LoginResponse'
         '400':
-          description: Invalid Fields
+          description: Champs invalides
         '500':
-          description: Internal Server Error
+          description: Erreur interne du serveur
   /user/signup:
     post:
       tags:
-        - User Module
-      summary: Signup
-      description: API for Signup
+        - Module Utilisateur
+      summary: Inscription
+      description: API pour l'inscription
       parameters:
         - in: body
           name: body
-          description: Signup Payload
+          description: Données d'inscription
           required: true
           schema:
             $ref: '#/definitions/User'
@@ -50,56 +50,56 @@ paths:
         - application/json
       responses:
         '200':
-          description: Signup Successfully
+          description: Inscription réussie
           schema:
             $ref: '#/definitions/ApiResponse'
         '400':
-          description: Invalid Fields
+          description: Champs invalides
         '500':
-          description: Internal Server Error
+          description: Erreur interne du serveur
   /user/profile:
     post:
       security:
         - Bearer: []
       tags:
-        - User Module
-      summary: User Profile API
-      description: API for fetching a user profile
+        - Module Utilisateur
+      summary: API de profil utilisateur
+      description: API pour récupérer un profil utilisateur
       parameters:
         - in: header
           name: Authorization
-          description: Attach Bearer JWT token
+          description: Joindre le token Bearer JWT
           required: true
           type: string
       produces:
         - application/json
       responses:
         '200':
-          description: User profile retrieved successfully
+          description: Profil utilisateur récupéré avec succès
           schema:
             $ref: '#/definitions/ApiResponse'
         '400':
-          description: Invalid Fields
+          description: Champs invalides
         '401':
-          description: Unauthorized
+          description: Non autorisé
         '500':
-          description: Internal Server Error
+          description: Erreur interne du serveur
     put:
       security:
         - Bearer: []
       tags:
-        - User Module
-      summary: User Profile API
-      description: API for updating a user profile
+        - Module Utilisateur
+      summary: API de profil utilisateur
+      description: API pour mettre à jour un profil utilisateur
       parameters:
         - in: header
           name: Authorization
-          description: Attach Bearer JWT token
+          description: Joindre le token Bearer JWT
           required: true
           type: string
         - in: body
           name: body
-          description: Update user profile attributes
+          description: Mettre à jour les attributs du profil utilisateur
           required: true
           schema:
             $ref: '#/definitions/UserProfile'
@@ -107,42 +107,42 @@ paths:
         - application/json
       responses:
         '200':
-          description: User profile updated successfully
+          description: Profil utilisateur mis à jour avec succès
           schema:
             $ref: '#/definitions/ApiResponse'
         '400':
-          description: Invalid Fields
+          description: Champs invalides
         '401':
-          description: Unauthorized
+          description: Non autorisé
         '500':
-          description: Internal Server Error
+          description: Erreur interne du serveur
   /user/accounts:
     get:
       security:
         - Bearer: []
       tags:
-        - Transactions Module
-      summary: Retrieve All User Accounts
+        - Module Transactions
+      summary: Récupérer tous les comptes utilisateur
       description: |
-        Retrieves all bank accounts belonging to the authenticated user. This endpoint returns a comprehensive list of accounts including checking accounts, savings accounts, and credit cards, along with their current balances and account details.
+        Récupère tous les comptes bancaires appartenant à l'utilisateur authentifié. Ce endpoint retourne une liste complète des comptes incluant les comptes courants, comptes d'épargne et cartes de crédit, avec leurs soldes actuels et détails de compte.
         
-        **Use Case**: Display all user accounts on the transactions page, allowing users to select which account's transactions they want to view.
+        **Cas d'usage** : Afficher tous les comptes utilisateur sur la page des transactions, permettant aux utilisateurs de sélectionner le compte dont ils veulent voir les transactions.
         
-        **Business Rules**:
-        - Only returns accounts belonging to the authenticated user
-        - Includes current balance for each account
-        - Returns masked account numbers for security (e.g., x8349)
+        **Règles métier** :
+        - Retourne uniquement les comptes appartenant à l'utilisateur authentifié
+        - Inclut le solde actuel pour chaque compte
+        - Retourne les numéros de compte masqués pour la sécurité (ex : x8349)
       parameters:
         - in: header
           name: Authorization
-          description: Bearer JWT token for authentication
+          description: Token Bearer JWT pour l'authentification
           required: true
           type: string
       produces:
         - application/json
       responses:
         '200':
-          description: User accounts retrieved successfully
+          description: Comptes utilisateur récupérés avec succès
           schema:
             type: object
             properties:
@@ -151,7 +151,7 @@ paths:
                 example: 200
               message:
                 type: string
-                example: Accounts retrieved successfully
+                example: Comptes récupérés avec succès
               body:
                 type: array
                 items:
@@ -159,32 +159,32 @@ paths:
           examples:
             application/json:
               status: 200
-              message: Accounts retrieved successfully
+              message: Comptes récupérés avec succès
               body:
                 - accountId: '63f8b8e4d123456789abcdef'
                   accountType: Checking
-                  accountName: Argent Bank Checking
+                  accountName: Argent Bank Compte Courant
                   accountNumber: 'x8349'
                   balance: 2082.79
                   currency: USD
                 - accountId: '63f8b8e4d123456789abcd00'
                   accountType: Savings
-                  accountName: Argent Bank Savings
+                  accountName: Argent Bank Épargne
                   accountNumber: 'x6712'
                   balance: 10928.42
                   currency: USD
                 - accountId: '63f8b8e4d123456789abcd01'
                   accountType: Credit Card
-                  accountName: Argent Bank Credit Card
+                  accountName: Argent Bank Carte de Crédit
                   accountNumber: 'x8349'
                   balance: 184.30
                   currency: USD
         '401':
-          description: Unauthorized - Invalid or missing authentication token
+          description: Non autorisé - Token d'authentification invalide ou manquant
           schema:
             $ref: '#/definitions/Error'
         '500':
-          description: Internal Server Error
+          description: Erreur interne du serveur
           schema:
             $ref: '#/definitions/Error'
   /user/accounts/{accountId}/transactions:
@@ -192,46 +192,46 @@ paths:
       security:
         - Bearer: []
       tags:
-        - Transactions Module
-      summary: Retrieve Account Transactions
+        - Module Transactions
+      summary: Récupérer les transactions du compte
       description: |
-        Retrieves all transactions for a specific account for the current month or a specified month. Transactions are returned in reverse chronological order (most recent first) and include all transaction details such as date, description, amount, and running balance.
+        Récupère toutes les transactions pour un compte spécifique pour le mois en cours ou un mois spécifié. Les transactions sont retournées en ordre chronologique inversé (plus récentes en premier) et incluent tous les détails de transaction tels que la date, la description, le montant et le solde courant.
         
-        **Use Case**: Display all transactions for a selected account on the transactions page, grouped by month.
+        **Cas d'usage** : Afficher toutes les transactions pour un compte sélectionné sur la page des transactions, groupées par mois.
         
-        **Business Rules**:
-        - Default behavior returns current month's transactions
-        - Optional month parameter allows viewing historical transactions
-        - Only returns transactions for accounts belonging to the authenticated user
-        - Transactions include running balance after each transaction
-        - Supports pagination for accounts with many transactions
+        **Règles métier** :
+        - Par défaut, retourne les transactions du mois en cours
+        - Le paramètre month optionnel permet de visualiser les transactions historiques
+        - Retourne uniquement les transactions des comptes appartenant à l'utilisateur authentifié
+        - Les transactions incluent le solde courant après chaque transaction
+        - Prend en charge la pagination pour les comptes avec beaucoup de transactions
       parameters:
         - in: header
           name: Authorization
-          description: Bearer JWT token for authentication
+          description: Token Bearer JWT pour l'authentification
           required: true
           type: string
         - in: path
           name: accountId
-          description: Unique identifier of the account
+          description: Identifiant unique du compte
           required: true
           type: string
         - in: query
           name: month
-          description: Month in YYYY-MM format (e.g., 2024-06). Defaults to current month if not provided.
+          description: Mois au format YYYY-MM (ex. 2024-06). Par défaut le mois en cours si non fourni.
           required: false
           type: string
           pattern: '^\d{4}-\d{2}$'
         - in: query
           name: page
-          description: Page number for pagination (starts at 1)
+          description: Numéro de page pour la pagination (commence à 1)
           required: false
           type: integer
           minimum: 1
           default: 1
         - in: query
           name: limit
-          description: Number of transactions per page (max 100)
+          description: Nombre de transactions par page (max 100)
           required: false
           type: integer
           minimum: 1
@@ -241,7 +241,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: Transactions retrieved successfully
+          description: Transactions récupérées avec succès
           schema:
             type: object
             properties:
@@ -250,7 +250,7 @@ paths:
                 example: 200
               message:
                 type: string
-                example: Transactions retrieved successfully
+                example: Transactions récupérées avec succès
               body:
                 type: object
                 properties:
@@ -278,12 +278,12 @@ paths:
           examples:
             application/json:
               status: 200
-              message: Transactions retrieved successfully
+              message: Transactions récupérées avec succès
               body:
                 account:
                   accountId: '63f8b8e4d123456789abcdef'
                   accountType: Checking
-                  accountName: Argent Bank Checking
+                  accountName: Argent Bank Compte Courant
                   accountNumber: 'x8349'
                   balance: 2082.79
                   currency: USD
@@ -293,16 +293,16 @@ paths:
                     description: Golden Sun Bakery
                     amount: 5.00
                     balance: 2082.79
-                    transactionType: Electronic
-                    category: Food
+                    transactionType: Électronique
+                    category: Alimentation
                     notes: ''
                   - transactionId: '63f8c9a5d123456789abcd00'
                     date: '2020-06-20T09:30:00.000Z'
                     description: Golden Sun Bakery
                     amount: 10.00
                     balance: 2087.79
-                    transactionType: Electronic
-                    category: Food
+                    transactionType: Électronique
+                    category: Alimentation
                     notes: ''
                 pagination:
                   currentPage: 1
@@ -310,27 +310,27 @@ paths:
                   totalTransactions: 2
                   limit: 20
         '400':
-          description: Bad Request - Invalid parameters (e.g., invalid month format, invalid accountId)
+          description: Requête incorrecte - Paramètres invalides (ex. format de mois invalide, accountId invalide)
           schema:
             $ref: '#/definitions/Error'
           examples:
             application/json:
               status: 400
-              message: Invalid month format. Please use YYYY-MM format.
+              message: Format de mois invalide. Veuillez utiliser le format YYYY-MM.
         '401':
-          description: Unauthorized - Invalid or missing authentication token
+          description: Non autorisé - Token d'authentification invalide ou manquant
           schema:
             $ref: '#/definitions/Error'
         '403':
-          description: Forbidden - User does not have access to this account
+          description: Interdit - L'utilisateur n'a pas accès à ce compte
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Not Found - Account does not exist
+          description: Non trouvé - Le compte n'existe pas
           schema:
             $ref: '#/definitions/Error'
         '500':
-          description: Internal Server Error
+          description: Erreur interne du serveur
           schema:
             $ref: '#/definitions/Error'
   /user/transactions/{transactionId}:
@@ -338,33 +338,33 @@ paths:
       security:
         - Bearer: []
       tags:
-        - Transactions Module
-      summary: Retrieve Transaction Details
+        - Module Transactions
+      summary: Récupérer les détails de la transaction
       description: |
-        Retrieves complete details of a specific transaction. This endpoint provides all information about a transaction including type, category, and user notes.
+        Récupère les détails complets d'une transaction spécifique. Ce endpoint fournit toutes les informations sur une transaction incluant le type, la catégorie et les notes de l'utilisateur.
         
-        **Use Case**: Display detailed view of a transaction when user expands/clicks on a transaction in the list.
+        **Cas d'usage** : Afficher la vue détaillée d'une transaction quand l'utilisateur développe/clique sur une transaction dans la liste.
         
-        **Business Rules**:
-        - Only returns transactions belonging to accounts owned by the authenticated user
-        - Includes all transaction metadata
-        - Returns user-editable fields (category, notes)
+        **Règles métier** :
+        - Retourne uniquement les transactions appartenant aux comptes possédés par l'utilisateur authentifié
+        - Inclut toutes les métadonnées de la transaction
+        - Retourne les champs éditables par l'utilisateur (catégorie, notes)
       parameters:
         - in: header
           name: Authorization
-          description: Bearer JWT token for authentication
+          description: Token Bearer JWT pour l'authentification
           required: true
           type: string
         - in: path
           name: transactionId
-          description: Unique identifier of the transaction
+          description: Identifiant unique de la transaction
           required: true
           type: string
       produces:
         - application/json
       responses:
         '200':
-          description: Transaction details retrieved successfully
+          description: Détails de la transaction récupérés avec succès
           schema:
             type: object
             properties:
@@ -373,13 +373,13 @@ paths:
                 example: 200
               message:
                 type: string
-                example: Transaction retrieved successfully
+                example: Transaction récupérée avec succès
               body:
                 $ref: '#/definitions/TransactionDetails'
           examples:
             application/json:
               status: 200
-              message: Transaction retrieved successfully
+              message: Transaction récupérée avec succès
               body:
                 transactionId: '63f8c9a5d123456789abcdef'
                 accountId: '63f8b8e4d123456789abcdef'
@@ -387,60 +387,60 @@ paths:
                 description: Golden Sun Bakery
                 amount: 5.00
                 balance: 2082.79
-                transactionType: Electronic
-                category: Food
+                transactionType: Électronique
+                category: Alimentation
                 notes: ''
         '401':
-          description: Unauthorized - Invalid or missing authentication token
+          description: Non autorisé - Token d'authentification invalide ou manquant
           schema:
             $ref: '#/definitions/Error'
         '403':
-          description: Forbidden - User does not have access to this transaction
+          description: Interdit - L'utilisateur n'a pas accès à cette transaction
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Not Found - Transaction does not exist
+          description: Non trouvé - La transaction n'existe pas
           schema:
             $ref: '#/definitions/Error'
           examples:
             application/json:
               status: 404
-              message: Transaction not found
+              message: Transaction non trouvée
         '500':
-          description: Internal Server Error
+          description: Erreur interne du serveur
           schema:
             $ref: '#/definitions/Error'
     patch:
       security:
         - Bearer: []
       tags:
-        - Transactions Module
-      summary: Update Transaction Information
+        - Module Transactions
+      summary: Mettre à jour les informations de la transaction
       description: |
-        Updates user-modifiable information of a transaction. Only the category and notes fields can be modified by users. This endpoint uses PATCH to allow partial updates - you only need to send the fields you want to update.
+        Met à jour les informations modifiables par l'utilisateur d'une transaction. Seuls les champs catégorie et notes peuvent être modifiés par les utilisateurs. Ce endpoint utilise PATCH pour permettre les mises à jour partielles - vous devez envoyer uniquement les champs que vous souhaitez mettre à jour.
         
-        **Use Case**: Allow users to categorize their transactions and add personal notes for better expense tracking and organization.
+        **Cas d'usage** : Permettre aux utilisateurs de catégoriser leurs transactions et d'ajouter des notes personnelles pour un meilleur suivi des dépenses et une meilleure organisation.
         
-        **Business Rules**:
-        - Only category and notes can be modified
-        - Transaction amount, date, description cannot be changed
-        - Category must be from predefined list or custom categories
-        - Notes have a maximum length limit
-        - Only the account owner can modify transactions
+        **Règles métier** :
+        - Seuls catégorie et notes peuvent être modifiés
+        - Le montant, la date, la description de la transaction ne peuvent pas être changés
+        - La catégorie doit être de la liste prédéfinie ou des catégories personnalisées
+        - Les notes ont une limite de longueur maximale
+        - Seul le propriétaire du compte peut modifier les transactions
       parameters:
         - in: header
           name: Authorization
-          description: Bearer JWT token for authentication
+          description: Token Bearer JWT pour l'authentification
           required: true
           type: string
         - in: path
           name: transactionId
-          description: Unique identifier of the transaction to update
+          description: Identifiant unique de la transaction à mettre à jour
           required: true
           type: string
         - in: body
           name: body
-          description: Transaction fields to update (only category and notes are modifiable)
+          description: Champs de transaction à mettre à jour (seuls catégorie et notes sont modifiables)
           required: true
           schema:
             $ref: '#/definitions/TransactionUpdate'
@@ -448,7 +448,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: Transaction updated successfully
+          description: Transaction mise à jour avec succès
           schema:
             type: object
             properties:
@@ -457,13 +457,13 @@ paths:
                 example: 200
               message:
                 type: string
-                example: Transaction updated successfully
+                example: Transaction mise à jour avec succès
               body:
                 $ref: '#/definitions/TransactionDetails'
           examples:
             application/json:
               status: 200
-              message: Transaction updated successfully
+              message: Transaction mise à jour avec succès
               body:
                 transactionId: '63f8c9a5d123456789abcdef'
                 accountId: '63f8b8e4d123456789abcdef'
@@ -471,68 +471,68 @@ paths:
                 description: Golden Sun Bakery
                 amount: 5.00
                 balance: 2082.79
-                transactionType: Electronic
-                category: Food
-                notes: Breakfast meeting with client
+                transactionType: Électronique
+                category: Alimentation
+                notes: Petit-déjeuner de réunion avec client
         '400':
-          description: Bad Request - Invalid data (e.g., category not in allowed list, notes too long)
+          description: Requête incorrecte - Données invalides (ex. catégorie non dans la liste autorisée, notes trop longues)
           schema:
             $ref: '#/definitions/Error'
           examples:
             application/json:
               status: 400
-              message: Category must be one of the allowed values
+              message: La catégorie doit être l'une des valeurs autorisées
         '401':
-          description: Unauthorized - Invalid or missing authentication token
+          description: Non autorisé - Token d'authentification invalide ou manquant
           schema:
             $ref: '#/definitions/Error'
         '403':
-          description: Forbidden - User does not have permission to modify this transaction
+          description: Interdit - L'utilisateur n'a pas la permission de modifier cette transaction
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Not Found - Transaction does not exist
+          description: Non trouvé - La transaction n'existe pas
           schema:
             $ref: '#/definitions/Error'
         '500':
-          description: Internal Server Error
+          description: Erreur interne du serveur
           schema:
             $ref: '#/definitions/Error'
     delete:
       security:
         - Bearer: []
       tags:
-        - Transactions Module
-      summary: Delete Transaction
+        - Module Transactions
+      summary: Supprimer une transaction
       description: |
-        Deletes a transaction from the user's account. This endpoint is included for completeness but may have restricted usage based on business rules.
+        Supprime une transaction du compte de l'utilisateur. Ce endpoint est inclus pour l'exhaustivité mais peut avoir un usage restreint selon les règles métier.
         
-        **Use Case**: Allow users to remove duplicate or erroneous transactions (if business rules permit).
+        **Cas d'usage** : Permettre aux utilisateurs de supprimer des transactions en double ou erronées (si les règles métier le permettent).
         
-        **Business Rules**:
-        - Most transactions cannot be deleted as they represent actual bank activity
-        - Only certain types of transactions may be deletable (e.g., manually added notes, pending transactions)
-        - Deletion may be "soft delete" (marked as deleted but retained in database)
-        - Account owner verification required
-        - Some transactions may be locked and cannot be deleted
+        **Règles métier** :
+        - La plupart des transactions ne peuvent pas être supprimées car elles représentent une activité bancaire réelle
+        - Seuls certains types de transactions peuvent être supprimables (ex. notes ajoutées manuellement, transactions en attente)
+        - La suppression peut être "soft delete" (marquée comme supprimée mais conservée en base de données)
+        - Vérification du propriétaire du compte requise
+        - Certaines transactions peuvent être verrouillées et ne peuvent pas être supprimées
         
-        **Note**: Consult with business stakeholders to determine exact deletion policy.
+        **Note** : Consultez les parties prenantes métier pour déterminer la politique de suppression exacte.
       parameters:
         - in: header
           name: Authorization
-          description: Bearer JWT token for authentication
+          description: Token Bearer JWT pour l'authentification
           required: true
           type: string
         - in: path
           name: transactionId
-          description: Unique identifier of the transaction to delete
+          description: Identifiant unique de la transaction à supprimer
           required: true
           type: string
       produces:
         - application/json
       responses:
         '200':
-          description: Transaction deleted successfully
+          description: Transaction supprimée avec succès
           schema:
             type: object
             properties:
@@ -541,29 +541,29 @@ paths:
                 example: 200
               message:
                 type: string
-                example: Transaction deleted successfully
+                example: Transaction supprimée avec succès
           examples:
             application/json:
               status: 200
-              message: Transaction deleted successfully
+              message: Transaction supprimée avec succès
         '401':
-          description: Unauthorized - Invalid or missing authentication token
+          description: Non autorisé - Token d'authentification invalide ou manquant
           schema:
             $ref: '#/definitions/Error'
         '403':
-          description: Forbidden - This transaction cannot be deleted due to business rules or user lacks permission
+          description: Interdit - Cette transaction ne peut pas être supprimée en raison des règles métier ou l'utilisateur n'a pas la permission
           schema:
             $ref: '#/definitions/Error'
           examples:
             application/json:
               status: 403
-              message: This transaction cannot be deleted as it represents completed bank activity
+              message: Cette transaction ne peut pas être supprimée car elle représente une activité bancaire terminée
         '404':
-          description: Not Found - Transaction does not exist
+          description: Non trouvé - La transaction n'existe pas
           schema:
             $ref: '#/definitions/Error'
         '500':
-          description: Internal Server Error
+          description: Erreur interne du serveur
           schema:
             $ref: '#/definitions/Error'
   /user/transactions/categories:
@@ -571,28 +571,28 @@ paths:
       security:
         - Bearer: []
       tags:
-        - Transactions Module
-      summary: Retrieve Available Transaction Categories
+        - Module Transactions
+      summary: Récupérer les catégories de transaction disponibles
       description: |
-        Retrieves the list of all available transaction categories that users can assign to their transactions. This includes both predefined system categories and any custom categories created by the user.
+        Récupère la liste de toutes les catégories de transaction disponibles que les utilisateurs peuvent assigner à leurs transactions. Cela inclut à la fois les catégories système prédéfinies et toutes catégories personnalisées créées par l'utilisateur.
         
-        **Use Case**: Populate the category dropdown menu when users are editing transaction categories.
+        **Cas d'usage** : Peupler le menu déroulant de catégories quand les utilisateurs éditent les catégories de transaction.
         
-        **Business Rules**:
-        - Returns both system-defined and user-defined categories
-        - Categories may be organized hierarchically (e.g., Food > Restaurants, Food > Groceries)
-        - Some categories may be suggested based on transaction description or merchant
+        **Règles métier** :
+        - Retourne à la fois les catégories définies par le système et définies par l'utilisateur
+        - Les catégories peuvent être organisées hiérarchiquement (ex. Alimentation > Restaurants, Alimentation > Épicerie)
+        - Certaines catégories peuvent être suggérées selon la description de transaction ou le commerçant
       parameters:
         - in: header
           name: Authorization
-          description: Bearer JWT token for authentication
+          description: Token Bearer JWT pour l'authentification
           required: true
           type: string
       produces:
         - application/json
       responses:
         '200':
-          description: Categories retrieved successfully
+          description: Catégories récupérées avec succès
           schema:
             type: object
             properties:
@@ -601,7 +601,7 @@ paths:
                 example: 200
               message:
                 type: string
-                example: Categories retrieved successfully
+                example: Catégories récupérées avec succès
               body:
                 type: array
                 items:
@@ -609,48 +609,48 @@ paths:
                   properties:
                     categoryId:
                       type: string
-                      description: Unique category identifier
+                      description: Identifiant unique de la catégorie
                     name:
                       type: string
-                      description: Category name
+                      description: Nom de la catégorie
                     type:
                       type: string
                       enum:
                         - system
                         - custom
-                      description: Whether this is a system or user-defined category
+                      description: Si c'est une catégorie système ou définie par l'utilisateur
           examples:
             application/json:
               status: 200
-              message: Categories retrieved successfully
+              message: Catégories récupérées avec succès
               body:
                 - categoryId: 'cat_001'
-                  name: Food
+                  name: Alimentation
                   type: system
                 - categoryId: 'cat_002'
-                  name: Transportation
+                  name: Transport
                   type: system
                 - categoryId: 'cat_003'
-                  name: Entertainment
+                  name: Divertissement
                   type: system
                 - categoryId: 'cat_004'
                   name: Shopping
                   type: system
                 - categoryId: 'cat_005'
-                  name: Healthcare
+                  name: Santé
                   type: system
                 - categoryId: 'cat_006'
-                  name: Utilities
+                  name: Services publics
                   type: system
                 - categoryId: 'cat_custom_001'
-                  name: Business Expenses
+                  name: Dépenses professionnelles
                   type: custom
         '401':
-          description: Unauthorized - Invalid or missing authentication token
+          description: Non autorisé - Token d'authentification invalide ou manquant
           schema:
             $ref: '#/definitions/Error'
         '500':
-          description: Internal Server Error
+          description: Erreur interne du serveur
           schema:
             $ref: '#/definitions/Error'
 securityDefinitions:
@@ -659,11 +659,11 @@ securityDefinitions:
     name: Authorization
     in: header
     description: |
-      JWT authorization header using the Bearer scheme. 
+      En-tête d'autorisation JWT utilisant le schéma Bearer. 
       
-      Enter 'Bearer' [space] and then your token in the text input below.
+      Entrez 'Bearer' [espace] puis votre token dans le champ de texte ci-dessous.
       
-      Example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      Exemple : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 definitions:
   User:
     type: object
@@ -671,23 +671,23 @@ definitions:
       email:
         type: string
         format: email
-        description: User's email address
+        description: Adresse email de l'utilisateur
         example: tony@stark.com
       password:
         type: string
         format: password
-        description: User's password (minimum 8 characters)
+        description: Mot de passe de l'utilisateur (minimum 8 caractères)
         minLength: 8
         example: password123
       firstName:
         type: string
-        description: User's first name
+        description: Prénom de l'utilisateur
         minLength: 1
         maxLength: 50
         example: Tony
       lastName:
         type: string
-        description: User's last name
+        description: Nom de famille de l'utilisateur
         minLength: 1
         maxLength: 50
         example: Stark
@@ -700,27 +700,27 @@ definitions:
       email:
         type: string
         format: email
-        description: User's email address
+        description: Adresse email de l'utilisateur
         example: tony@stark.com
       password:
         type: string
         format: password
-        description: User's password
+        description: Mot de passe de l'utilisateur
         example: password123
   ApiResponse:
     type: object
     properties:
       status:
         type: integer
-        description: HTTP status code
+        description: Code de statut HTTP
         example: 200
       message:
         type: string
-        description: Response message
-        example: Operation successful
+        description: Message de réponse
+        example: Opération réussie
       body:
         type: object
-        description: Response data
+        description: Données de réponse
         properties:
           id:
             type: string
@@ -733,20 +733,20 @@ definitions:
     properties:
       token:
         type: string
-        description: JWT authentication token (valid for 24 hours)
+        description: Token d'authentification JWT (valide 24 heures)
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZjhiOGU0ZDEyMzQ1Njc4OWFiY2RlZiIsImlhdCI6MTYxNjIzOTAyMn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
   UserProfile:
     type: object
     properties:
       firstName:
         type: string
-        description: User's first name
+        description: Prénom de l'utilisateur
         minLength: 1
         maxLength: 50
         example: Tony
       lastName:
         type: string
-        description: User's last name
+        description: Nom de famille de l'utilisateur
         minLength: 1
         maxLength: 50
         example: Stark
@@ -760,11 +760,11 @@ definitions:
     properties:
       accountId:
         type: string
-        description: Unique account identifier
+        description: Identifiant unique du compte
         example: '63f8b8e4d123456789abcdef'
       accountType:
         type: string
-        description: Type of bank account
+        description: Type de compte bancaire
         enum:
           - Checking
           - Savings
@@ -772,21 +772,21 @@ definitions:
         example: Checking
       accountName:
         type: string
-        description: Display name of the account
-        example: Argent Bank Checking
+        description: Nom d'affichage du compte
+        example: Argent Bank Compte Courant
       accountNumber:
         type: string
-        description: Masked account number showing only last 4 digits for security
+        description: Numéro de compte masqué montrant uniquement les 4 derniers chiffres pour la sécurité
         pattern: '^x\d{4}$'
         example: 'x8349'
       balance:
         type: number
         format: float
-        description: Current account balance in the account's currency
+        description: Solde actuel du compte dans la devise du compte
         example: 2082.79
       currency:
         type: string
-        description: Three-letter ISO 4217 currency code
+        description: Code devise ISO 4217 à trois lettres
         default: USD
         example: USD
   Transaction:
@@ -801,38 +801,38 @@ definitions:
     properties:
       transactionId:
         type: string
-        description: Unique transaction identifier
+        description: Identifiant unique de la transaction
         example: '63f8c9a5d123456789abcdef'
       date:
         type: string
         format: date-time
-        description: Transaction date and time in ISO 8601 format (UTC)
+        description: Date et heure de la transaction au format ISO 8601 (UTC)
         example: '2020-06-20T10:00:00.000Z'
       description:
         type: string
-        description: Merchant or transaction description
+        description: Commerçant ou description de la transaction
         example: Golden Sun Bakery
       amount:
         type: number
         format: float
-        description: Transaction amount (always positive, type determines if debit/credit)
+        description: Montant de la transaction (toujours positif, le type détermine si débit/crédit)
         example: 5.00
       balance:
         type: number
         format: float
-        description: Account balance after this transaction
+        description: Solde du compte après cette transaction
         example: 2082.79
       transactionType:
         type: string
-        description: Type of transaction
-        example: Electronic
+        description: Type de transaction
+        example: Électronique
       category:
         type: string
-        description: Transaction category (user-modifiable for expense tracking)
-        example: Food
+        description: Catégorie de transaction (modifiable par l'utilisateur pour le suivi des dépenses)
+        example: Alimentation
       notes:
         type: string
-        description: User's personal notes about the transaction (user-modifiable)
+        description: Notes personnelles de l'utilisateur sur la transaction (modifiable par l'utilisateur)
         maxLength: 500
         example: ''
   TransactionDetails:
@@ -848,66 +848,66 @@ definitions:
     properties:
       transactionId:
         type: string
-        description: Unique transaction identifier
+        description: Identifiant unique de la transaction
         example: '63f8c9a5d123456789abcdef'
       accountId:
         type: string
-        description: ID of the account this transaction belongs to
+        description: ID du compte auquel cette transaction appartient
         example: '63f8b8e4d123456789abcdef'
       date:
         type: string
         format: date-time
-        description: Transaction date and time in ISO 8601 format (UTC)
+        description: Date et heure de la transaction au format ISO 8601 (UTC)
         example: '2020-06-20T10:00:00.000Z'
       description:
         type: string
-        description: Merchant or transaction description
+        description: Commerçant ou description de la transaction
         example: Golden Sun Bakery
       amount:
         type: number
         format: float
-        description: Transaction amount (always positive, type determines if debit/credit)
+        description: Montant de la transaction (toujours positif, le type détermine si débit/crédit)
         example: 5.00
       balance:
         type: number
         format: float
-        description: Account balance after this transaction
+        description: Solde du compte après cette transaction
         example: 2082.79
       transactionType:
         type: string
-        description: Type of transaction (e.g., Electronic, Check, ATM, Transfer)
-        example: Electronic
+        description: Type de transaction (ex. Électronique, Chèque, GAB, Virement)
+        example: Électronique
       category:
         type: string
-        description: Transaction category (user-modifiable for expense tracking)
-        example: Food
+        description: Catégorie de transaction (modifiable par l'utilisateur pour le suivi des dépenses)
+        example: Alimentation
       notes:
         type: string
-        description: User's personal notes about the transaction (user-modifiable)
+        description: Notes personnelles de l'utilisateur sur la transaction (modifiable par l'utilisateur)
         maxLength: 500
         example: ''
   TransactionUpdate:
     type: object
-    description: Fields that can be updated by the user. At least one field must be provided.
+    description: Champs qui peuvent être mis à jour par l'utilisateur. Au moins un champ doit être fourni.
     minProperties: 1
     properties:
       category:
         type: string
-        description: New category for the transaction (must be from available categories)
-        example: Food
+        description: Nouvelle catégorie pour la transaction (doit être parmi les catégories disponibles)
+        example: Alimentation
       notes:
         type: string
-        description: New notes for the transaction
+        description: Nouvelles notes pour la transaction
         maxLength: 500
-        example: Breakfast meeting with client
+        example: Petit-déjeuner de réunion avec client
   Error:
     type: object
     properties:
       status:
         type: integer
-        description: HTTP status code
+        description: Code de statut HTTP
         example: 400
       message:
         type: string
-        description: Error message describing what went wrong
-        example: Invalid request parameters
+        description: Message d'erreur décrivant ce qui s'est mal passé
+        example: Paramètres de requête invalides

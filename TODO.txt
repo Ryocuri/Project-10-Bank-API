@@ -205,8 +205,8 @@ PHASE 2 : TRANSACTIONS - PROPOSITION D'API (DOCUMENTATION SWAGGER UNIQUEMENT)
 ------------------------------------------------------------------------
 12. ANALYSE DES BESOINS POUR LES TRANSACTIONS
 ------------------------------------------------------------------------
-[ ] Analyser les wireframes fournis dans /designs/wireframes/transactions.png
-[ ] Identifier les données nécessaires pour une transaction :
+[X] Analyser les wireframes fournis dans /designs/wireframes/transactions.png
+[X] Identifier les données nécessaires pour une transaction :
     - ID de transaction
     - Date
     - Description
@@ -215,173 +215,190 @@ PHASE 2 : TRANSACTIONS - PROPOSITION D'API (DOCUMENTATION SWAGGER UNIQUEMENT)
     - Type de transaction (débit/crédit)
     - Catégorie
     - Notes (modifiables par l'utilisateur)
-[ ] Définir les relations entre entités :
+[X] Définir les relations entre entités :
     - User -> Accounts (one-to-many)
     - Account -> Transactions (one-to-many)
-[ ] Déterminer les endpoints nécessaires
+[X] Déterminer les endpoints nécessaires
 
 ------------------------------------------------------------------------
 13. CRÉATION DU DOCUMENT SWAGGER POUR LES TRANSACTIONS
 ------------------------------------------------------------------------
-[ ] Créer un nouveau fichier YAML : swagger-transactions.yaml
-[ ] Définir la structure de base Swagger 2.0
-[ ] Ajouter les informations générales (title, description, version)
+[X] Créer un nouveau fichier YAML : swagger.yaml (mis à jour avec Phase 2)
+[X] Créer une version française : swaggerFr.yaml
+[X] Définir la structure de base Swagger 2.0
+[X] Ajouter les informations générales (title, description, version 2.0.0)
 
 ------------------------------------------------------------------------
 14. ENDPOINT : GET /user/accounts
 ------------------------------------------------------------------------
-[ ] Définir l'endpoint GET /user/accounts
-[ ] Méthode : GET
-[ ] Description : Récupérer tous les comptes bancaires de l'utilisateur
-[ ] Sécurité : Bearer JWT token requis
-[ ] Paramètres :
+[X] Définir l'endpoint GET /user/accounts
+[X] Méthode : GET
+[X] Description : Récupérer tous les comptes bancaires de l'utilisateur
+[X] Sécurité : Bearer JWT token requis
+[X] Paramètres :
     - Authorization header (required)
-[ ] Réponses :
+[X] Réponses :
     - 200 : Liste des comptes avec succès
       Schema : Array of Account objects (accountId, accountType, balance, accountNumber)
     - 401 : Non autorisé (token invalide ou manquant)
     - 500 : Erreur serveur interne
-[ ] Définir le modèle Account dans definitions
+[X] Définir le modèle Account dans definitions
 
 ------------------------------------------------------------------------
 15. ENDPOINT : GET /user/accounts/{accountId}/transactions
 ------------------------------------------------------------------------
-[ ] Définir l'endpoint GET /user/accounts/{accountId}/transactions
-[ ] Méthode : GET
-[ ] Description : Récupérer toutes les transactions d'un compte pour le mois en cours
-[ ] Sécurité : Bearer JWT token requis
-[ ] Paramètres :
+[X] Définir l'endpoint GET /user/accounts/{accountId}/transactions
+[X] Méthode : GET
+[X] Description : Récupérer toutes les transactions d'un compte pour le mois en cours
+[X] Sécurité : Bearer JWT token requis
+[X] Paramètres :
     - accountId (path parameter, required) : ID du compte
     - month (query parameter, optional) : Mois (format YYYY-MM, défaut: mois en cours)
+    - page et limit (query parameters, optional) : Pagination
     - Authorization header (required)
-[ ] Réponses :
+[X] Réponses :
     - 200 : Transactions récupérées avec succès
-      Schema : Array of Transaction objects
+      Schema : Array of Transaction objects avec pagination
     - 400 : Paramètres invalides (accountId incorrect)
     - 401 : Non autorisé
+    - 403 : Interdit (utilisateur n'a pas accès au compte)
     - 404 : Compte non trouvé
     - 500 : Erreur serveur interne
-[ ] Définir le modèle Transaction dans definitions :
+[X] Définir le modèle Transaction dans definitions :
     - transactionId (string)
-    - date (string, format date-time)
+    - date (string, format date-time ISO 8601)
     - description (string)
     - amount (number)
     - balance (number)
-    - transactionType (string: debit/credit)
+    - transactionType (string: Electronic/Check/ATM/Transfer)
     - category (string)
-    - notes (string, optionnel)
+    - notes (string, optionnel, max 500 caractères)
 
 ------------------------------------------------------------------------
 16. ENDPOINT : GET /user/transactions/{transactionId}
 ------------------------------------------------------------------------
-[ ] Définir l'endpoint GET /user/transactions/{transactionId}
-[ ] Méthode : GET
-[ ] Description : Récupérer les détails complets d'une transaction spécifique
-[ ] Sécurité : Bearer JWT token requis
-[ ] Paramètres :
+[X] Définir l'endpoint GET /user/transactions/{transactionId}
+[X] Méthode : GET
+[X] Description : Récupérer les détails complets d'une transaction spécifique
+[X] Sécurité : Bearer JWT token requis
+[X] Paramètres :
     - transactionId (path parameter, required) : ID de la transaction
     - Authorization header (required)
-[ ] Réponses :
+[X] Réponses :
     - 200 : Détails de la transaction récupérés avec succès
-      Schema : Transaction object (détails complets)
+      Schema : TransactionDetails object (avec accountId)
     - 401 : Non autorisé
+    - 403 : Interdit (utilisateur n'a pas accès)
     - 404 : Transaction non trouvée
     - 500 : Erreur serveur interne
 
 ------------------------------------------------------------------------
 17. ENDPOINT : PATCH /user/transactions/{transactionId}
 ------------------------------------------------------------------------
-[ ] Définir l'endpoint PATCH /user/transactions/{transactionId}
-[ ] Méthode : PATCH
-[ ] Description : Modifier les informations modifiables d'une transaction (catégorie, notes)
-[ ] Sécurité : Bearer JWT token requis
-[ ] Paramètres :
+[X] Définir l'endpoint PATCH /user/transactions/{transactionId}
+[X] Méthode : PATCH
+[X] Description : Modifier les informations modifiables d'une transaction (catégorie, notes)
+[X] Sécurité : Bearer JWT token requis
+[X] Paramètres :
     - transactionId (path parameter, required) : ID de la transaction
     - Authorization header (required)
     - Body (required) : TransactionUpdate object
-[ ] Body schema (TransactionUpdate) :
+[X] Body schema (TransactionUpdate) :
     - category (string, optional) : Nouvelle catégorie
-    - notes (string, optional) : Nouvelles notes
-[ ] Réponses :
+    - notes (string, optional) : Nouvelles notes (max 500 caractères)
+[X] Réponses :
     - 200 : Transaction mise à jour avec succès
-      Schema : Transaction object (mis à jour)
+      Schema : TransactionDetails object (mis à jour)
     - 400 : Données invalides
     - 401 : Non autorisé
+    - 403 : Interdit (permission insuffisante)
     - 404 : Transaction non trouvée
     - 500 : Erreur serveur interne
 
 ------------------------------------------------------------------------
 18. ENDPOINT : DELETE /user/transactions/{transactionId}
 ------------------------------------------------------------------------
-[ ] Définir l'endpoint DELETE /user/transactions/{transactionId}
-[ ] Méthode : DELETE
-[ ] Description : Supprimer une transaction (soft delete ou complet selon la politique)
-[ ] Sécurité : Bearer JWT token requis
-[ ] Paramètres :
+[X] Définir l'endpoint DELETE /user/transactions/{transactionId}
+[X] Méthode : DELETE
+[X] Description : Supprimer une transaction (soft delete ou complet selon la politique)
+[X] Sécurité : Bearer JWT token requis
+[X] Paramètres :
     - transactionId (path parameter, required) : ID de la transaction
     - Authorization header (required)
-[ ] Réponses :
+[X] Réponses :
     - 200 : Transaction supprimée avec succès
       Schema : Success message
     - 401 : Non autorisé
     - 404 : Transaction non trouvée
     - 403 : Interdit (certaines transactions ne peuvent pas être supprimées)
     - 500 : Erreur serveur interne
-[ ] Note : Clarifier les règles métier pour la suppression
+[X] Note : Règles métier documentées pour la suppression
 
 ------------------------------------------------------------------------
-19. ENDPOINT : POST /user/transactions (OPTIONNEL)
+19. ENDPOINT : GET /user/transactions/categories (AJOUTÉ)
 ------------------------------------------------------------------------
-[ ] Évaluer si un endpoint POST est nécessaire pour créer des transactions
-[ ] Si oui, définir l'endpoint POST /user/transactions
-[ ] Description : Créer une nouvelle transaction manuelle
-[ ] Paramètres et body selon les besoins métier
-[ ] Note : Généralement, les transactions sont créées automatiquement par le système bancaire
+[X] Définir l'endpoint GET /user/transactions/categories
+[X] Méthode : GET
+[X] Description : Récupérer la liste des catégories disponibles pour les transactions
+[X] Sécurité : Bearer JWT token requis
+[X] Retourne : Catégories système + catégories personnalisées de l'utilisateur
+[X] Cas d'usage : Peupler le dropdown de catégories pour l'édition
+
+[ ] ENDPOINT : POST /user/transactions (NON IMPLÉMENTÉ - OPTIONNEL)
+    Note : Non nécessaire car les transactions sont créées automatiquement par le système bancaire
 
 ------------------------------------------------------------------------
 20. DÉFINITION DES MODÈLES (DEFINITIONS)
 ------------------------------------------------------------------------
-[ ] Définir le modèle Account :
+[X] Définir le modèle Account :
     - accountId (string)
-    - accountType (string: Checking/Savings/CreditCard)
+    - accountType (string: Checking/Savings/Credit Card)
+    - accountName (string)
     - balance (number)
-    - accountNumber (string)
+    - accountNumber (string, format masqué x####)
     - currency (string, par défaut USD)
-[ ] Définir le modèle Transaction (complet) :
+[X] Définir le modèle Transaction (complet) :
     - transactionId (string, unique)
-    - accountId (string)
-    - date (string, format date-time)
+    - date (string, format date-time ISO 8601)
     - description (string)
-    - amount (number, peut être négatif pour débit)
+    - amount (number, toujours positif)
     - balance (number, solde après transaction)
-    - transactionType (string, enum: debit/credit)
+    - transactionType (string: Electronic/Check/ATM/Transfer)
     - category (string, modifiable)
-    - notes (string, optionnel, modifiable)
-[ ] Définir le modèle TransactionUpdate :
+    - notes (string, optionnel, modifiable, max 500 car)
+[X] Définir le modèle TransactionDetails :
+    - Tous les champs de Transaction
+    - accountId (string) ajouté
+[X] Définir le modèle TransactionUpdate :
     - category (string, optional)
-    - notes (string, optional)
-[ ] Définir les modèles de réponse d'erreur standards
+    - notes (string, optional, max 500 caractères)
+    - minProperties: 1 (au moins un champ requis)
+[X] Définir le modèle Error :
+    - status (integer)
+    - message (string)
 
 ------------------------------------------------------------------------
 21. SÉCURITÉ ET BONNES PRATIQUES
 ------------------------------------------------------------------------
-[ ] Ajouter securityDefinitions pour Bearer JWT
-[ ] Spécifier que tous les endpoints nécessitent l'authentification
-[ ] Documenter les codes d'erreur de manière cohérente
-[ ] Ajouter des exemples de requêtes/réponses dans le YAML
-[ ] Spécifier le format des dates (ISO 8601)
-[ ] Définir les contraintes de validation (min/max length, patterns)
+[X] Ajouter securityDefinitions pour Bearer JWT
+[X] Spécifier que tous les endpoints de transactions nécessitent l'authentification
+[X] Documenter les codes d'erreur de manière cohérente (200, 400, 401, 403, 404, 500)
+[X] Ajouter des exemples complets de requêtes/réponses dans le YAML
+[X] Spécifier le format des dates (ISO 8601)
+[X] Définir les contraintes de validation (min/max length, patterns, enums)
+[X] Documenter les règles métier pour chaque endpoint
 
 ------------------------------------------------------------------------
 22. FINALISATION DU DOCUMENT SWAGGER
 ------------------------------------------------------------------------
-[ ] Vérifier la syntaxe YAML (validation)
-[ ] Tester le document dans l'éditeur Swagger (https://editor.swagger.io/)
-[ ] Exporter le fichier en format YAML
-[ ] Ajouter des descriptions détaillées pour chaque endpoint
-[ ] Ajouter des tags pour organiser les endpoints (User Module, Transactions Module)
-[ ] Documenter les cas d'usage dans un fichier README séparé
-[ ] Préparer des exemples d'utilisation des API
+[X] Vérifier la syntaxe YAML (validation)
+[X] Tester le document dans l'éditeur Swagger (https://editor.swagger.io/)
+[X] Exporter le fichier en format YAML
+[X] Ajouter des descriptions détaillées pour chaque endpoint avec cas d'usage
+[X] Ajouter des tags pour organiser les endpoints (User Module, Transactions Module)
+[X] Documenter les règles métier et cas d'usage dans chaque endpoint
+[X] Préparer des exemples complets d'utilisation des API
+[X] Créer une version française complète (swaggerFr.yaml)
 
 
 
@@ -397,7 +414,13 @@ CONTRAINTES ET RAPPELS :
 
 LIVRABLES ATTENDUS :
 ✓ Phase 1 : Application React complète et fonctionnelle avec Redux
-✓ Phase 2 : Document swagger-transactions.yaml avec les endpoints proposés
+✓ Phase 2 : Documents Swagger complets avec les endpoints proposés
+    - swagger.yaml (version 2.0.0) - Anglais
+    - swaggerFr.yaml (version 2.0.0) - Français
+    
+FICHIERS SWAGGER CRÉÉS :
+- swagger.yaml : Documentation complète API (EN) avec Phase 1 + Phase 2 Transactions
+- swaggerFr.yaml : Documentation complète API (FR) avec toutes les traductions
 
 TECHNOLOGIES À UTILISER :
 - React (Vite)
@@ -411,7 +434,7 @@ RÉFÉRENCES :
 - CSS : /designs/css/main.css
 - Images : /designs/img/
 - Wireframes : /designs/wireframes/
-- API actuelle : swagger.yaml
+- API Phase 1 + Phase 2 : swagger.yaml et swaggerFr.yaml
 - Backend : /server/
 
 ================================================================================

@@ -39,12 +39,21 @@ const UserProfilePage = () => {
   };
 
   const handleSave = async () => {
+    // Validate that both names have at least 2 characters
+    if (editedName.firstName.trim().length < 2 || editedName.lastName.trim().length < 2) {
+      return;
+    }
+    
     try {
       await dispatch(updateUserProfile(editedName)).unwrap();
       setIsEditing(false);
     } catch (err) {
       console.error('Failed to update profile:', err);
     }
+  };
+
+  const isNameValid = () => {
+    return editedName.firstName.trim().length >= 2 && editedName.lastName.trim().length >= 2;
   };
 
   const handleChange = (e) => {
@@ -132,7 +141,7 @@ const UserProfilePage = () => {
                 <Button
                   onClick={handleSave}
                   className="edit-button"
-                  disabled={userLoading}
+                  disabled={userLoading || !isNameValid()}
                 >
                   {userLoading ? 'Saving...' : 'Save'}
                 </Button>
